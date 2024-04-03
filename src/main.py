@@ -5,6 +5,8 @@ import tkinter as tk
 import numpy as np
 from tkinter import filedialog, messagebox
 import matplotlib.pyplot as plt
+
+
 """
     A simple test  code for  image processing application built using Tkinter and OpenCV.
 
@@ -45,14 +47,13 @@ class ImageProcessorApp:
 
     def create_widgets(self):
         """
-      create_widget function is athe GUI widgets  for the application.
+        create_widget function is athe GUI widgets  for the application.
+        This method initialize and configures various widgets such as menus, canvas, and scrollbars
+        within the main Tkinter window.
 
-    This method initialize and configures various widgets such as menus, canvas, and scrollbars
-    within the main Tkinter window.
-
-    Returns:
-        None
-    """  
+        Returns:
+                None
+        """  
         self.menu_bar = tk.Menu(self.project_airss)
         self.file_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.file_menu.add_command(label="Open", command=self.open_image)
@@ -96,12 +97,12 @@ class ImageProcessorApp:
 
     def open_image(self): 
         """
-    Opens an image file dialog and loads the selected image into the application.
-
-    This method prompts the user to select an image file using a file dialog and it will open image unchnaged either its 8, 10, 12 ,16 bits. If a file
-    is selected, it is loaded using OpenCV, converted to RGB format if necessary, and
-    converted to a PIL format for displaying in the GUI.
-    """
+        Opens an image file dialog and loads the selected image into the application.
+        This method prompts the user to select an image file using a file dialog 
+        and it will open image unchnaged either its 8, 10, 12 ,16 bits. If a file
+        is selected, it is loaded using OpenCV, converted to RGB format if necessary, and
+        converted to a PIL format for displaying in the GUI.
+         """
         
         file_path = filedialog.askopenfilename()
         if file_path:
@@ -121,10 +122,10 @@ class ImageProcessorApp:
 
 
     def display_image(self, img):
-        '''   dispaly image function to  Display the provided image on the canvan
-          and  Adjust the scroll region of the canvas based on the bounding box of all items'''
-        
-
+        '''    
+        dispaly image function to  Display the provided image on the canvan
+        and  Adjust the scroll region of the canvas based on the bounding box of all items
+        '''
         self.image_canvas.create_image(0, 0, image=img, anchor=tk.NW)
      
      # Adjust the scroll region of the canvas based on the bounding box of all items
@@ -133,34 +134,34 @@ class ImageProcessorApp:
 
     def start_box(self, event):
         """
-    Initializes the selection of a bounding box.
+        Initializes the selection of a bounding box.
 
-    This function is triggered when the left mouse button is pressed.
-    It records the starting position of the bounding box.
+        This function is triggered when the left mouse button is pressed.
+        It records the starting position of the bounding box.
 
-    Parameters:
-        event (tk.Event): The mouse event that triggered the function call.
+        Parameters:
+            event (tk.Event): The mouse event that triggered the function call.
 
-    Returns:
-        None
-    """   
+        Returns:
+            None
+        """   
         self.box_start = (event.x, event.y)
         
         
 
     def draw_box(self, event):
         """
-    Draws the bounding box on the canvas.
+        Draws the bounding box on the canvas.
 
-    This function is called when the mouse is moved after the left mouse button is pressed.
-    It draws the bounding box on the canvas as the mouse is dragged.
+        This function is called when the mouse is moved after the left mouse button is pressed.
+        It draws the bounding box on the canvas as the mouse is dragged.
 
-    Parameters:
-        event (tk.Event): The mouse event that triggered the function call.
+        Parameters:
+            event (tk.Event): The mouse event that triggered the function call.
 
-    Returns:
-        None
-    """
+        Returns:
+            None
+        """
         if self.box_start:
             x0, y0 = self.box_start
             x1, y1 = event.x, event.y
@@ -170,18 +171,18 @@ class ImageProcessorApp:
 
     def end_box(self, event):
         """
-    Finalizes the selection of the bounding box.
+        Finalizes the selection of the bounding box.
 
-    This function is called when the left mouse button is released.
-    It completes the selection of the bounding box by updating its coordinates
-    and unbinding mouse events to prevent further modifications.
+        This function is called when the left mouse button is released.
+        It completes the selection of the bounding box by updating its coordinates
+        and unbinding mouse events to prevent further modifications.
 
-    Parameters:
-        event (tk.Event): The mouse event that triggered the function call.
+        Parameters:
+            event (tk.Event): The mouse event that triggered the function call.
 
-    Returns:
-        None
-    """
+        Returns:
+            None
+        """
         if self.box_start:
             x0, y0 = self.box_start
             x1, y1 = event.x, event.y
@@ -193,27 +194,27 @@ class ImageProcessorApp:
             self.image_canvas.unbind("<Button-1>")
             self.image_canvas.unbind("<B1-Motion>")
             self.image_canvas.unbind("<ButtonRelease-1>")
-
-
-    
-      
+  
     def select_roi(self):
         
-        '''Initiates the process of selecting a region of interest (ROI) on the canvas.
-
+        '''
+        Initiates the process of selecting a region of interest (ROI) on the canvas.
         This function binds mouse events to start, draw, and finalize the selection of a bounding box.
         When this method is called, users can start selecting a bounding box by clicking and dragging the mouse.
 
         Returns:
-            None'''
+            None
+        '''
         self.image_canvas.bind("<Button-1>", self.start_box)
         self.image_canvas.bind("<B1-Motion>", self.draw_box)
         self.image_canvas.bind("<ButtonRelease-1>", self.end_box)       
 
 
     def crop_image(self):     
-        ''' crop_image function to crop the image based on the selected roi
-        then display it with canvad  '''
+        ''' 
+        crop_image function to crop the image based on the selected roi
+        then display it with canvas
+        '''
         
         if self.selected_roi and self.image is not None:
             x0, y0, x1, y1 = self.selected_roi
@@ -241,19 +242,18 @@ class ImageProcessorApp:
      
     def normalize_image(self):
             """
-    Normalize the cropped image and display the normalized version.
+            Normalize the cropped image and display the normalized version.
 
-    This function first checks if a cropped image is available.
-    If available, it converts the cropped image to a NumPy array and checks if it's in grayscale.
-    Then, it normalizes the image using OpenCV's normalize function.
-    After normalization, it converts the normalized NumPy array back to a PIL Image.
-    The normalized image is stored for future reference and displayed on the canvas.
+            This function first checks if a cropped image is available.
+            If available, it converts the cropped image to a NumPy array and checks if it's in grayscale.
+            Then, it normalizes the image using OpenCV's normalize function.
+            After normalization, it converts the normalized NumPy array back to a PIL Image.
+            The normalized image is stored for future reference and displayed on the canvas.
+            If no cropped image is available, an error message is displayed.
 
-    If no cropped image is available, an error message is displayed.
-
-    Returns:
-        None
-    """   
+            Returns:
+                None
+            """   
             if self.cropped_image is not None:
                 # Convert PIL 
                 cropped_image_np = np.array(self.cropped_image)
@@ -273,16 +273,15 @@ class ImageProcessorApp:
 
     def save_image(self):
             """
-        Normalize the cropped image and display the normalized version.
+            Normalize the cropped image and display the normalized version.
+            This function first checks if a cropped image is available.
+            If available, it converts the cropped image to a NumPy array and checks if it's in grayscale.
+            Then, it normalizes the image using OpenCV's normalize function.
+            After normalization, it converts the normalized NumPy array back to a PIL Image.
+            The normalized image is stored for future reference and displayed on the canvas.
 
-        This function first checks if a cropped image is available.
-        If available, it converts the cropped image to a NumPy array and checks if it's in grayscale.
-        Then, it normalizes the image using OpenCV's normalize function.
-        After normalization, it converts the normalized NumPy array back to a PIL Image.
-        The normalized image is stored for future reference and displayed on the canvas.
-
-        If no cropped image is available, an error message is displayed.
-        """    
+            If no cropped image is available, an error message is displayed.
+            """    
             
             if self.normalized_image is not None:  # Check if normalized image is available
                 file_path = filedialog.asksaveasfilename(defaultextension=".png")
@@ -294,13 +293,14 @@ class ImageProcessorApp:
 
 
     def show_histogram(self):
-        '''Display the histogram for the selected region of interest (ROI).
+        '''
+        Display the histogram for the selected region of interest (ROI).
         This function calculates the histogram for each color channel of the cropped image.
-        It then plots the histograms using Matplotlib.
-        If no ROI is selected or no image is loaded, an error message is displayed.
-
+        It then plots the histograms using Matplotlib.If no ROI is selected or no image is loaded,
+        an error message is displayed.
         Returns:
-        None'''
+        None
+        '''
         
         if self.selected_roi and self.image is not None:
             
@@ -325,17 +325,17 @@ class ImageProcessorApp:
 
     def zoom_image(self, zoom_in=True):
         '''
-    Zoom in or out on the displayed image.
+        Zoom in or out on the displayed image.
 
-    This function resizes the image based on the zoom factor (1.25 for zooming in, 0.8 for zooming out).
-    It converts the image to the appropriate format for displaying using PIL and updates the canvas.
+        This function resizes the image based on the zoom factor (1.25 for zooming in, 0.8 for zooming out).
+        It converts the image to the appropriate format for displaying using PIL and updates the canvas.
 
-    Parameters:
+        Parameters:
         zoom_in (bool): A flag indicating whether to zoom in (True) or out (False). Default is True for zooming in.
 
-    Returns:
-        None
-     '''
+        Returns:
+            None
+        '''
         
         y, x, _ = self.image.shape
         factor = 1.25 if zoom_in else 0.8
@@ -353,9 +353,11 @@ class ImageProcessorApp:
    
         
     def update_footer(self, event=None):
-        ''' Update the footer label with information about the image.
-            This function updates the footer label with details such as image size, type, 
-            mouse position,and pixel value.'''
+        ''' 
+        Update the footer label with information about the image.
+        This function updates the footer label with details such as image size, type, 
+        mouse position,and pixel value.
+        '''
         if self.image is not None:
             x, y, _ = self.image.shape
             bits = self.image.dtype
