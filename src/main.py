@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
     - Zooming in and out of images
 
     Attributes:
-        project_airss (tk.Tk): The main Tkinter window of the application.
+        project_airiss (tk.Tk): The main Tkinter window of the application.
         image (numpy.ndarray): The currently loaded image as a NumPy array.
         normalized_image (PIL.Image.Image): The normalized version of the cropped image.
         photo_image (ImageTk.PhotoImage): The currently displayed image in the GUI.
@@ -29,16 +29,16 @@ import matplotlib.pyplot as plt
     """
 
 class ImageProcessorApp:
-    def __init__(self, project_airss):
-        self.project_airss = project_airss
-        self.project_airss.title("AiRISS")
+    def __init__(self, project_airiss):
+        self.project_airiss = project_airiss
+        self.project_airiss.title("AiRISS")
         self.create_widgets()
         self.image = None
         self.normalized_image = None
         self.photo_image = None
         self.cropped_image = None
         bold_font = tkFont.Font(weight="bold")
-        self.footer_label = tk.Label(project_airss, text="", justify=tk.RIGHT, font=bold_font)
+        self.footer_label = tk.Label(project_airiss, text="", justify=tk.RIGHT, font=bold_font)
         self.footer_label.pack(side=tk.BOTTOM, fill=tk.X)
         self.footer_label.configure(bg="gray", foreground="white")
         self.selected_roi = None
@@ -54,7 +54,7 @@ class ImageProcessorApp:
         Returns:
                 None
         """  
-        self.menu_bar = tk.Menu(self.project_airss)
+        self.menu_bar = tk.Menu(self.project_airiss)
         self.file_menu = tk.Menu(self.menu_bar, tearoff=0)
         self.file_menu.add_command(label="Open", command=self.open_image)
         self.file_menu.add_separator()
@@ -73,11 +73,11 @@ class ImageProcessorApp:
         self.action_menu.add_command(label="Zoom Out", command=lambda: self.zoom_image(False))
         self.menu_bar.add_cascade(label="Actions", menu=self.action_menu)
 
-        self.project_airss.config(menu=self.menu_bar)
+        self.project_airiss.config(menu=self.menu_bar)
 
         
 
-        self.canvas_frame = tk.Frame(self.project_airss)
+        self.canvas_frame = tk.Frame(self.project_airiss)
         self.canvas_frame.pack(fill=tk.BOTH, expand=True)
 
         self.image_canvas = tk.Canvas(self.canvas_frame, cursor="cross")
@@ -224,7 +224,7 @@ class ImageProcessorApp:
             messagebox.showerror("Error", "No ROI selected or no image loaded.")
 
     def display(self, cropped_img, titel):
-        cropped_window = tk.Toplevel(self.project_airss)
+        cropped_window = tk.Toplevel(self.project_airiss)
         cropped_window.title(titel)
 
         # Convert the cropped image to photoimage
@@ -241,55 +241,55 @@ class ImageProcessorApp:
 
      
     def normalize_image(self):
-            """
-            Normalize the cropped image and display the normalized version.
+        """
+        Normalize the cropped image and display the normalized version.
 
-            This function first checks if a cropped image is available.
-            If available, it converts the cropped image to a NumPy array and checks if it's in grayscale.
-            Then, it normalizes the image using OpenCV's normalize function.
-            After normalization, it converts the normalized NumPy array back to a PIL Image.
-            The normalized image is stored for future reference and displayed on the canvas.
-            If no cropped image is available, an error message is displayed.
+        This function first checks if a cropped image is available.
+        If available, it converts the cropped image to a NumPy array and checks if it's in grayscale.
+        Then, it normalizes the image using OpenCV's normalize function.
+        After normalization, it converts the normalized NumPy array back to a PIL Image.
+        The normalized image is stored for future reference and displayed on the canvas.
+        If no cropped image is available, an error message is displayed.
 
-            Returns:
-                None
-            """   
-            if self.cropped_image is not None:
-                # Convert PIL 
-                cropped_image_np = np.array(self.cropped_image)
-              
-                if len(cropped_image_np.shape) == 3 and cropped_image_np.shape[2] == 3:
-                    cropped_image_np = cv2.cvtColor(cropped_image_np, cv2.COLOR_RGB2GRAY)
-                # Normalize the image
-                norm_img = cv2.normalize(cropped_image_np, None, 0, 1.0, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
-                # Convert normalized image back to PIL Image
-                norm_img_pil = Image.fromarray((norm_img * 255).astype(np.uint8))
-                self.normalized_image = norm_img_pil  # Store normalized image
-                # Display the normalized image
-                self.display(norm_img_pil, "Normalized Image")
-            else:
-                messagebox.showerror("Error", "No cropped image or imageloaded.")
+        Returns:
+            None
+        """   
+        if self.cropped_image is not None:
+            # Convert PIL 
+            cropped_image_np = np.array(self.cropped_image)
+            
+            if len(cropped_image_np.shape) == 3 and cropped_image_np.shape[2] == 3:
+                cropped_image_np = cv2.cvtColor(cropped_image_np, cv2.COLOR_RGB2GRAY)
+            # Normalize the image
+            norm_img = cv2.normalize(cropped_image_np, None, 0, 1.0, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
+            # Convert normalized image back to PIL Image
+            norm_img_pil = Image.fromarray((norm_img * 255).astype(np.uint8))
+            self.normalized_image = norm_img_pil  # Store normalized image
+            # Display the normalized image
+            self.display(norm_img_pil, "Normalized Image")
+        else:
+            messagebox.showerror("Error", "No cropped image or imageloaded.")
            
 
     def save_image(self):
-            """
-            Normalize the cropped image and display the normalized version.
-            This function first checks if a cropped image is available.
-            If available, it converts the cropped image to a NumPy array and checks if it's in grayscale.
-            Then, it normalizes the image using OpenCV's normalize function.
-            After normalization, it converts the normalized NumPy array back to a PIL Image.
-            The normalized image is stored for future reference and displayed on the canvas.
+        """
+        Normalize the cropped image and display the normalized version.
+        This function first checks if a cropped image is available.
+        If available, it converts the cropped image to a NumPy array and checks if it's in grayscale.
+        Then, it normalizes the image using OpenCV's normalize function.
+        After normalization, it converts the normalized NumPy array back to a PIL Image.
+        The normalized image is stored for future reference and displayed on the canvas.
 
-            If no cropped image is available, an error message is displayed.
-            """    
+        If no cropped image is available, an error message is displayed.
+        """    
             
-            if self.normalized_image is not None:  # Check if normalized image is available
-                file_path = filedialog.asksaveasfilename(defaultextension=".png")
-                if file_path:
-                    # Save normalized image using PIL
-                    self.normalized_image.save(file_path)
-            else:
-                messagebox.showerror("Error", "no normalized image tobe saved.")
+        if self.normalized_image is not None:  # Check if normalized image is available
+            file_path = filedialog.asksaveasfilename(defaultextension=".png")
+            if file_path:
+                # Save normalized image using PIL
+                self.normalized_image.save(file_path)
+        else:
+            messagebox.showerror("Error", "no normalized image tobe saved.")
 
 
     def show_histogram(self):
@@ -373,9 +373,9 @@ class ImageProcessorApp:
 
 
 if __name__ == "__main__":
-    root = tk.Tk()
+    project_airiss = tk.Tk()
     #geomtry to resize the gui as needed
     
-    root.geometry("900x900+400+100")
-    app = ImageProcessorApp(root)
-    root.mainloop()
+    project_airiss.geometry("900x900+400+100")
+    app = ImageProcessorApp(project_airiss)
+    project_airiss.mainloop()
