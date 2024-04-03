@@ -129,18 +129,7 @@ class ImageProcessorApp:
      
      # Adjust the scroll region of the canvas based on the bounding box of all items
         self.image_canvas.config(scrollregion=self.image_canvas.bbox(tk.ALL))
-    """
-    Initializes the selection of a bounding box.
-
-    This function is triggered when the left mouse button is pressed.
-    It records the starting position of the bounding box.
-
-    Parameters:
-        event (tk.Event): The mouse event that triggered the function call.
-
-    Returns:
-        None
-    """    
+ 
 
     def start_box(self, event):
         """
