@@ -1,4 +1,4 @@
-# AiRISS_testcode
+# tkinter_test_code
 
 A simple test  code for  image processing application built using Tkinter and OpenCV.
 
